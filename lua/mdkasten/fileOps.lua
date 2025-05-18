@@ -17,7 +17,6 @@ fileops.nodeTitleUpdate = function()
     local currentBufPathInMDKPath = current_buf_path:gsub(config.config.mdkastenPath.."/", "")
 
     local title = common.getNoteTitle(current_buf_path)
-    local oldTitle = title
 
     local newTitle = vim.fn.input("Enter the node title: ", title)
     if newTitle == title or not newTitle then
@@ -66,7 +65,7 @@ fileops.nodeTitleUpdate = function()
         if config.config.titleType == "heading" then
             for i, line in ipairs(bufferContent) do
                 --For the header title
-                if line:match("^# "..oldTitle) then
+                if line:match("^# .*") then
                     bufferContent[i] = "# "..newTitle
                     bufTitleUpdated = true
                     break
@@ -76,7 +75,7 @@ fileops.nodeTitleUpdate = function()
             --For the yaml title
             if bufferContent[1]:match("^---") then
                 for i, line in ipairs(bufferContent) do
-                    if line:match("title: *"..oldTitle) then
+                    if line:match("title: .*") then
                         bufferContent[i] = "title: "..newTitle
                         bufTitleUpdated = true
                         break
@@ -131,10 +130,12 @@ fileops.createNode = function()
         table.insert(content, "")
     end
 
+	local escapedMdKastenPathStr = config.config.mdkastenPath:gsub("([%.%^%$%*%+%-%?%(%)%[%]{}])", "%%%1")
+
     if config.config.linkType == "markdown" then
-        table.insert(content, "@["..currentBufTitle.."]("..current_buf_path:gsub(config.config.mdkastenPath.."/","")..")")
+        table.insert(content, "@["..currentBufTitle.."]("..current_buf_path:gsub(escapedMdKastenPathStr.."/","")..")")
     elseif config.config.linkType == "wiki" then
-        table.insert(content, "@[["..current_buf_path:gsub(config.config.mdkastenPath.."/","").."|"..currentBufTitle.."]]")
+        table.insert(content, "@[["..current_buf_path:gsub(escapedMdKastenPathStr.."/","").."|"..currentBufTitle.."]]")
     end
 
     if config.config.titleType == "heading" then
