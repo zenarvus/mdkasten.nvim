@@ -110,7 +110,7 @@ navi.suggestNodes = function(linsert)
                 local heading
                 if file:match("%.md$") then
                     heading = entry.title
-                    display = string.format("%s (%s)", heading, file:gsub("^"..config.config.mdkastenPath.."/", ""))
+                    display = string.format("%s (%s)", heading, file:gsub("^"..common.escapedMdkastenPath.."/", ""))
                 else
                     --as we cannot go to the media files, add them to the list only if we are going to insert
                     if linsert == true then
@@ -137,9 +137,9 @@ navi.suggestNodes = function(linsert)
                     if linsert==true then
                         local link = ""
                         if config.config.linkType == "markdown" then
-                            link = string.format("[%s](%s)", selection.value, selection.path:gsub("^"..config.config.mdkastenPath.."/", ""))
+                            link = string.format("[%s](%s)", selection.value, selection.path:gsub("^"..common.escapedMdkastenPath.."/", ""))
                         elseif config.config.linkType == "wiki" then
-                            link = string.format("[[%s|%s]]", selection.path:gsub("^"..config.config.mdkastenPath.."/", ""), selection.value)
+                            link = string.format("[[%s|%s]]", selection.path:gsub("^"..common.escapedMdkastenPath.."/", ""), selection.value)
                         end
                         vim.api.nvim_put({ link }, 'c', true, true) -- Insert the link at the cursor position
                     else

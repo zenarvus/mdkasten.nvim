@@ -14,7 +14,7 @@ fileops.nodeTitleUpdate = function()
     local current_buf = vim.api.nvim_get_current_buf()
     local current_buf_path = vim.api.nvim_buf_get_name(current_buf)
 
-    local currentBufPathInMDKPath = current_buf_path:gsub(config.config.mdkastenPath.."/", "")
+    local currentBufPathInMDKPath = current_buf_path:gsub(common.escapedMdkastenPath.."/", "")
 
     local title = common.getNoteTitle(current_buf_path)
 
@@ -130,12 +130,10 @@ fileops.createNode = function()
         table.insert(content, "")
     end
 
-	local escapedMdKastenPathStr = config.config.mdkastenPath:gsub("([%.%^%$%*%+%-%?%(%)%[%]{}])", "%%%1")
-
     if config.config.linkType == "markdown" then
-        table.insert(content, "@["..currentBufTitle.."]("..current_buf_path:gsub(escapedMdKastenPathStr.."/","")..")")
+        table.insert(content, "@["..currentBufTitle.."]("..current_buf_path:gsub(common.escapedMdkastenPath.."/","")..")")
     elseif config.config.linkType == "wiki" then
-        table.insert(content, "@[["..current_buf_path:gsub(escapedMdKastenPathStr.."/","").."|"..currentBufTitle.."]]")
+        table.insert(content, "@[["..current_buf_path:gsub(common.escapedMdkastenPath.."/","").."|"..currentBufTitle.."]]")
     end
 
     if config.config.titleType == "heading" then

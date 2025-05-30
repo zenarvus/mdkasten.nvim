@@ -5,6 +5,9 @@ local common = {}
 
 local vim = vim
 
+--Escape the special characters to prevent :match and :gsub from detecting them as pattern matching characters.
+common.escapedMdkastenPath = config.config.mdkastenPath:gsub("([%.%^%$%*%+%-%?%(%)%[%]{}])", "%%%1")
+
 common.getNoteTitle = function(filePath)
     local title = "Untitled"
 

@@ -64,9 +64,9 @@ listgen.listMoc = function()
     for _, file in ipairs(file_matches) do
         local title = common.getNoteTitle(file)
         if config.config.linkType == "markdown" then
-            table.insert(new_lines, "- ["..title.."]("..file:gsub("^"..config.config.mdkastenPath.."/", "")..")")
+            table.insert(new_lines, "- ["..title.."]("..file:gsub("^"..common.escapedMdkastenPath.."/", "")..")")
         elseif config.config.linkType == "wiki" then
-            table.insert(new_lines, "- [["..file:gsub("^"..config.config.mdkastenPath.."/", "").."|"..title.."]]")
+            table.insert(new_lines, "- [["..file:gsub("^"..common.escapedMdkastenPath.."/", "").."|"..title.."]]")
         end
     end
     -- Remove old content between <!--moc:s--> and <!--moc:e-->
@@ -126,7 +126,7 @@ listgen.listOrphans = function()
     --all non hidden files in notes dir
     for _, file in ipairs(vim.fn.systemlist("rg --files --glob '!static/' --glob '!.*' " .. config.config.mdkastenPath)) do
         --while file contains the full path, linkked_files are relative to the notes vault so path prefix should be removed from file
-        local compatible_path=file:gsub("^"..config.config.mdkastenPath.."/", "")
+        local compatible_path=file:gsub("^"..common.escapedMdkastenPath.."/", "")
         if not vim.tbl_contains(linked_files, compatible_path) then
             table.insert(orphan_files, compatible_path)
         end
@@ -200,7 +200,7 @@ listgen.listLtne = function()
 					if not linked_file:match("^[a-zA-Z]+://") and not linked_file:match("^#") then
 						local linked_path = config.config.mdkastenPath.."/"..linked_file
 						if vim.fn.filereadable(linked_path) == 0 then
-							local compatible_path=file:gsub("^"..config.config.mdkastenPath.."/", "")
+							local compatible_path=file:gsub("^"..common.escapedMdkastenPath.."/", "")
 							if not vim.tbl_contains(ltne_files, compatible_path) then
 								--print(compatible_path..", line: "..i)
 								table.insert(ltne_files, compatible_path)
@@ -212,7 +212,7 @@ listgen.listLtne = function()
 					if not linked_file:match("^[a-zA-Z]+://") and not linked_file:match("^#") then
 						local linked_path = config.config.mdkastenPath.."/"..linked_file
 						if vim.fn.filereadable(linked_path) == 0 then
-							local compatible_path=file:gsub("^"..config.config.mdkastenPath.."/", "")
+							local compatible_path=file:gsub("^"..common.escapedMdkastenPath.."/", "")
 							if not vim.tbl_contains(ltne_files, compatible_path) then
 								--print(compatible_path..", line: "..i)
 								table.insert(ltne_files, compatible_path)

@@ -1,3 +1,5 @@
+local vim = vim
+
 local function setup(opts)
     local config = require("mdkasten.config").initConfig(opts)
 
@@ -9,16 +11,14 @@ local function setup(opts)
     local navi = require("mdkasten.navigation")
     local listgen = require("mdkasten.fileListGen")
     local fileops = require("mdkasten.fileOps")
+	local common = require("mdkasten.common")
 	--require("mdkasten.deprecated")
-
-	--Escape the special characters to prevent :match from detecting them as pattern matching characters.
-	local escapedPathStr = config.config.mdkastenPath:gsub("([%.%^%$%*%+%-%?%(%)%[%]{}])", "%%%1")
 
     vim.api.nvim_create_autocmd("FileType", {
         pattern = "markdown",
         callback = function()
             --do not run the plugin if the current buffer is not in the mdkastenPath
-            if not vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()):match(escapedPathStr) then
+            if not vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()):match(common.escapedMdkastenPath) then
 				print(vim.api.nvim_buf_get_name(vim.api.nvim_get_current_buf()).." is does not match with "..config.config.mdkastenPath)
                 return
             end
