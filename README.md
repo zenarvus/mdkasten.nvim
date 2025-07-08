@@ -1,4 +1,4 @@
-# markdown-roam.nvim
+# mdkasten.nvim
 ![GitHub stars](https://img.shields.io/github/stars/zenarvus/mdkasten.nvim?style=flat-square)
 ![Forks](https://img.shields.io/github/forks/zenarvus/mdkasten.nvim?style=flat-square)
 ![Issues](https://img.shields.io/github/issues/zenarvus/mdkasten.nvim?style=flat-square)
@@ -23,6 +23,8 @@ A NeoVim plugin for easy navigation and linking between Markdown notes.
         vim.keymap.set('n', 'gh', ":MDKNodeFind<CR>")
         vim.keymap.set('n', 'gH', ":MDKNodeInsert<CR>")
         vim.keymap.set('n', 'gb', ":MDKNodeCreate<CR>")
+        -- To be used with mandos
+        vim.keymap.ser('n', 'gl', ":MDKOpenMDInBrowser")
     end
 },
 ```
@@ -49,6 +51,9 @@ The `:MDKNodeInsert` command lists all the files inside the vault, and inserts t
 
 #### Custom GF Function
 The `:MDKCustomGF` command navigates to the file on the cursor, or in the current line if its in the markdown format. Otherwise, it uses the **xdg-open** command to open it.
+
+#### Preview In Browser
+The `:MDKOpenMDInBrowser` command opens the current markdown file in browser to preview it with [mandos](https://github.com/zenarvus/mandos)
 
 ### File List Generation
 #### List Map of Contents
