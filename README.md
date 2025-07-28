@@ -16,7 +16,12 @@ A NeoVim plugin for easy navigation and linking between Markdown notes.
     config = function ()
         require("mdkasten").setup({
             -- Required: Set The Vault Path
-            mdkastenPath="~/notes"
+            mdkastenPath= "~/notes",
+            fileTemplate = {
+                "# {{title}}",
+                "",
+                "{{parentNode}}"
+            }
         })
         -- Optional: Set Keymaps
         vim.keymap.set('n', 'gf', ":MDKCustomGF<CR>")
@@ -37,6 +42,8 @@ A NeoVim plugin for easy navigation and linking between Markdown notes.
 #### Create Node
 Use the `:MDKNodeCreate` command to create a node and insert its link to the current buffer. The created node will be a child of the current buffer.
 
+The initial content of the new node is determined by the `fileTemplate` configuration. `{{title}}` is replaced with the title and `{{parentNode}}` is replaced with the node link that the new node is created in.
+
 #### Delete The Current Node
 To delete the current node, use the `:MDKCurrentNodeDelete` command. When it asks you a yes and no question, press "y" and enter.
 
@@ -56,14 +63,6 @@ The `:MDKCustomGF` command navigates to the file on the cursor, or in the curren
 The `:MDKOpenMDInBrowser` command opens the current markdown file in browser to preview it with [mandos](https://github.com/zenarvus/mandos)
 
 ### File List Generation
-#### List Map of Contents
-When a node links to another node using an "@" symbol in the beginning, it is considered as a child node. For example:
-`@[node2](node2.md)`
-
-The `:MDKListMoc` command retrieves all child nodes of the current buffer and displays them between the `<!--moc:s-->` and `<!--moc:e-->`.
-
-If the `<!--moc:s-->` and `<!--moc:e-->` comments are not present in the current buffer, the list generation will not work.
-
 #### List Orphan Files
 The `:MDKListOrphans` command identifies and lists all the files that do not have links in any other nodes.
 
