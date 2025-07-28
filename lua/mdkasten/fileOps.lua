@@ -108,12 +108,7 @@ fileops.createNode = function()
 		print("The node title cannot be empty.")
 		return
 	end
-
-	local suffix = ""
-	for _ = 1, 5 do
-		suffix = suffix .. string.char(math.random(65, 90))
-	end
-	local filename = common.toBase62(os.time()) --[[.. suffix]] .. ".md"
+	local filename = common.toBase62(os.time()) .. ".md"
 
 	local filePath = config.config.mdkastenPath .. "/" .. filename
 
@@ -121,24 +116,22 @@ fileops.createNode = function()
 	local current_buf_path = vim.api.nvim_buf_get_name(current_buf)
 	local currentBufTitle = common.getNoteTitle(current_buf_path)
 
-	local content = {}
+	local content = config.config.fileTemplate
 
-	if config.config.titleType == "yaml" then
-		table.insert(content, "---")
-		table.insert(content, "title: "..title)
-		table.insert(content, "---")
-		table.insert(content, "")
-	end
+	for templateLineNum, templateLine in ipairs(content) do
+		if templateLine:match("{{title}}") then
+			content[templateLineNum]=templateLine:gsub("{{title}}", title)
+		end
+		if templateLine:match("{{parentNode}}") then
+			local linkText = ""
+			if config.config.linkType == "markdown" then
+				linkText = "["..currentBufTitle.."]("..current_buf_path:gsub(common.escapedMdkastenPath.."/","")..")"
+			elseif config.config.linkType == "wiki" then
+				linkText = "[["..current_buf_path:gsub(common.escapedMdkastenPath.."/","").."|"..currentBufTitle.."]]"
+			end
 
-	if config.config.linkType == "markdown" then
-		table.insert(content, "@["..currentBufTitle.."]("..current_buf_path:gsub(common.escapedMdkastenPath.."/","")..")")
-	elseif config.config.linkType == "wiki" then
-		table.insert(content, "@[["..current_buf_path:gsub(common.escapedMdkastenPath.."/","").."|"..currentBufTitle.."]]")
-	end
-
-	if config.config.titleType == "heading" then
-		table.insert(content,"")
-		table.insert(content, "# "..title)
+			content[templateLineNum]=templateLine:gsub("{{parentNode}}", linkText)
+		end
 	end
 
 	vim.fn.writefile(content, filePath)

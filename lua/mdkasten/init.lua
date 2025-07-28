@@ -32,8 +32,6 @@ local function setup(opts)
 			-- Open markdown file in browser to preview it
 			vim.api.nvim_create_user_command('MDKOpenMDInBrowser', navi.openMarkdownInBrowser, {})
 
-			--List map of contents
-			vim.api.nvim_create_user_command('MDKListMoc',listgen.listMoc,{})
 			--List orphan nodes
 			vim.api.nvim_create_user_command('MDKListOrphans',listgen.listOrphans,{})
 			--List nodes that has links to non-existent

@@ -10,6 +10,11 @@ c.initConfig = function(opts)
 	c.config.linkType = opts.linkType or "markdown" --markdown or wiki
 	c.config.filenameType = opts.filenameType or "id" --id or slug
 	c.config.ignored = opts.ignored or {} -- files and folders to be excluded. Relative to mdkastenPath
+	c.config.fileTemplate = opts.fileTemplate or {
+		"# {{title}}",
+		"",
+		"{{parentNode}}"
+	}
 
 	return c
 end
