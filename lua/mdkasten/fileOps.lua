@@ -116,7 +116,10 @@ fileops.createNode = function()
 	local current_buf_path = vim.api.nvim_buf_get_name(current_buf)
 	local currentBufTitle = common.getNoteTitle(current_buf_path)
 
-	local content = config.config.fileTemplate
+	local content = {}
+	for _, line in ipairs(config.config.fileTemplate) do
+		table.insert(content, line)
+	end
 
 	for templateLineNum, templateLine in ipairs(content) do
 		if templateLine:match("{{title}}") then
