@@ -128,9 +128,9 @@ fileops.createNode = function()
 		if templateLine:match("{{parentNode}}") then
 			local linkText = ""
 			if config.config.linkType == "markdown" then
-				linkText = "["..currentBufTitle.."]("..current_buf_path:gsub(common.escapedMdkastenPath.."/","")..")"
+				linkText = "["..currentBufTitle.."]("..current_buf_path:gsub(common.escapedMdkastenPath,"")..")"
 			elseif config.config.linkType == "wiki" then
-				linkText = "[["..current_buf_path:gsub(common.escapedMdkastenPath.."/","").."|"..currentBufTitle.."]]"
+				linkText = "[["..current_buf_path:gsub(common.escapedMdkastenPath,"").."|"..currentBufTitle.."]]"
 			end
 
 			content[templateLineNum]=templateLine:gsub("{{parentNode}}", linkText)

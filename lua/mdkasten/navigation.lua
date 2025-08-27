@@ -110,7 +110,7 @@ navi.suggestNodes = function(linsert)
 				local heading
 				if file:match("%.md$") then
 					heading = entry.title
-					display = string.format("%s (%s)", heading, file:gsub("^"..common.escapedMdkastenPath.."/", ""))
+					display = string.format("%s (%s)", heading, file:gsub("^"..common.escapedMdkastenPath, ""))
 				else
 					--as we cannot go to the media files, add them to the list only if we are going to insert
 					if linsert == true then
@@ -137,9 +137,9 @@ navi.suggestNodes = function(linsert)
 					if linsert==true then
 						local link = ""
 						if config.config.linkType == "markdown" then
-							link = string.format("[%s](%s)", selection.value, selection.path:gsub("^"..common.escapedMdkastenPath.."/", ""))
+							link = string.format("[%s](%s)", selection.value, selection.path:gsub("^"..common.escapedMdkastenPath, ""))
 						elseif config.config.linkType == "wiki" then
-							link = string.format("[[%s|%s]]", selection.path:gsub("^"..common.escapedMdkastenPath.."/", ""), selection.value)
+							link = string.format("[[%s|%s]]", selection.path:gsub("^"..common.escapedMdkastenPath, ""), selection.value)
 						end
 						vim.api.nvim_put({ link }, 'c', true, true) -- Insert the link at the cursor position
 					else
@@ -174,8 +174,8 @@ navi.mdRoamCustomGF = function()
 
 	if #links == 1 then
 		if links[1]:match("%.mdx?$") then
-		if vim.fn.filereadable(config.config.mdkastenPath.."/"..links[1]) ~= 0 then
-			vim.cmd("edit "..config.config.mdkastenPath.."/"..links[1])
+		if vim.fn.filereadable(config.config.mdkastenPath..links[1]) ~= 0 then
+			vim.cmd("edit "..config.config.mdkastenPath..links[1])
 		else
 			print("File not found.")
 			return
@@ -184,19 +184,19 @@ navi.mdRoamCustomGF = function()
 		if links[1]:match("[a-z]+:%/%/.*") then
 			os.execute("xdg-open "..links[1].." > /dev/null 2>&1 &")
 		else
-			os.execute("xdg-open "..config.config.mdkastenPath.."/"..links[1].." &")
+			os.execute("xdg-open "..config.config.mdkastenPath..links[1].." &")
 		end
 		end
 
 	elseif #links > 1 then
 		local file_under_cursor = vim.fn.expand('<cfile>')
 		if file_under_cursor:match("%.mdx?$") then
-		vim.cmd("edit "..config.config.mdkastenPath.."/"..file_under_cursor)
+		vim.cmd("edit "..config.config.mdkastenPath..file_under_cursor)
 		else
 		if file_under_cursor:match("[a-z]+:%/%/.*") then
 			os.execute("xdg-open "..file_under_cursor.." > /dev/null 2>&1 &")
 		else
-			os.execute("xdg-open "..config.config.mdkastenPath.."/"..file_under_cursor.." &")
+			os.execute("xdg-open "..config.config.mdkastenPath..file_under_cursor.." &")
 		end
 		end
 
