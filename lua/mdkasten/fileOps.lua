@@ -108,7 +108,7 @@ fileops.createNode = function()
 		print("The node title cannot be empty.")
 		return
 	end
-	local filename = common.toBase62(os.time()) .. ".md"
+	local filename = "/"..common.toBase62(os.time()) .. ".md"
 
 	local filePath = config.config.mdkastenPath .. "/" .. filename
 
