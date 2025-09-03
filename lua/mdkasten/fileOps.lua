@@ -14,7 +14,7 @@ fileops.nodeTitleUpdate = function()
 	local current_buf = vim.api.nvim_get_current_buf()
 	local current_buf_path = vim.api.nvim_buf_get_name(current_buf)
 
-	local currentBufPathInMDKPath = current_buf_path:gsub(common.escapedMdkastenPath.."/", "")
+	local currentBufPathInMDKPath = current_buf_path:gsub(common.escapedMdkastenPath, "")
 
 	local title = common.getNoteTitle(current_buf_path)
 
